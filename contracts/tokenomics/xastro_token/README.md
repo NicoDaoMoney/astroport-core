@@ -1,6 +1,6 @@
-# Astroport xASTRO Token
+# Astroport xNICO Token
 
-This is the Astroport xASTRO token implementation.
+This is the Astroport xNICO token implementation.
 
 ---
 

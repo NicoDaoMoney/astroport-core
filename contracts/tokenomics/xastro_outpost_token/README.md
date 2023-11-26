@@ -1,6 +1,6 @@
-# Astroport xASTRO Token
+# Astroport xNICO Token
 
-This is the Astroport xASTRO token implementation for use on Outposts. It allows
+This is the Astroport xNICO token implementation for use on Outposts. It allows
 queries of address balance and total supply at specific timestamps.
 
 ---

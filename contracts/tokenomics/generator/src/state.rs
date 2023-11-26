@@ -19,7 +19,7 @@ use std::collections::HashMap;
 /// Constants to update user's virtual amount. For more info see update_virtual_amount() documentation.
 /// 0.4 of the LP tokens amount.
 const REAL_SHARE: Decimal = Decimal::raw(400000000000000000);
-/// 0.6 of the user's voting power aka vxASTRO balance.
+/// 0.6 of the user's voting power aka vxNICO balance.
 const VXASTRO_SHARE: Decimal = Decimal::raw(600000000000000000);
 
 /// Stores the contract config at the given key
@@ -167,8 +167,8 @@ pub fn update_proxy_asset(deps: DepsMut, proxy_addr: &Addr) -> StdResult<()> {
 /// - b_u is the amount of LP tokens a user staked in a generator
 ///
 /// - S is the total amount of LP tokens staked in a generator
-/// - w_i is a user’s current vxASTRO balance
-/// - W is the total amount of vxASTRO
+/// - w_i is a user’s current vxNICO balance
+/// - W is the total amount of vxNICO
 pub(crate) fn update_virtual_amount(
     querier: QuerierWrapper,
     cfg: &Config,
