@@ -17,12 +17,12 @@ use astroport::querier::{query_supply, query_token_balance};
 use astroport::xastro_token::InstantiateMsg as TokenInstantiateMsg;
 
 /// Contract name that is used for migration.
-const CONTRACT_NAME: &str = "astroport-staking";
+const CONTRACT_NAME: &str = "nico-staking";
 /// Contract version that is used for migration.
 const CONTRACT_VERSION: &str = env!("CARGO_PKG_VERSION");
 
 /// xNICO information.
-const TOKEN_NAME: &str = "Staked Astroport";
+const TOKEN_NAME: &str = "Staked xNICO";
 const TOKEN_SYMBOL: &str = "xNICO";
 
 /// A `reply` call code ID used for sub-messages.
@@ -67,7 +67,7 @@ pub fn instantiate(
                 marketing: msg.marketing,
             })?,
             funds: vec![],
-            label: String::from("Staked Astroport Token"),
+            label: String::from("Staked Nico Token"),
         }
         .into(),
         id: INSTANTIATE_TOKEN_REPLY_ID,
@@ -279,7 +279,7 @@ pub fn migrate(deps: DepsMut, _env: Env, _msg: MigrateMsg) -> Result<Response, C
     let contract_version = get_contract_version(deps.storage)?;
 
     match contract_version.contract.as_ref() {
-        "astroport-staking" => match contract_version.version.as_ref() {
+        "nico-staking" => match contract_version.version.as_ref() {
             "1.0.0" | "1.0.1" | "1.0.2" => {}
             _ => return Err(ContractError::MigrationError {}),
         },

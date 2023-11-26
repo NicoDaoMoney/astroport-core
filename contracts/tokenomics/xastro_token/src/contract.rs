@@ -25,7 +25,7 @@ use cw20_base::ContractError;
 use cw_storage_plus::Bound;
 
 /// Contract name that is used for migration.
-const CONTRACT_NAME: &str = "astroport-xastro-token";
+const CONTRACT_NAME: &str = "xnico-token";
 /// Contract version that is used for migration.
 const CONTRACT_VERSION: &str = env!("CARGO_PKG_VERSION");
 
@@ -681,7 +681,7 @@ pub fn migrate(deps: DepsMut, _env: Env, _msg: MigrateMsg) -> StdResult<Response
     let contract_version = get_contract_version(deps.storage)?;
 
     match contract_version.contract.as_ref() {
-        "astroport-xastro-token" => match contract_version.version.as_ref() {
+        "xnico-token" => match contract_version.version.as_ref() {
             "1.0.0" | "1.0.1" | "1.0.2" => {}
             _ => {
                 return Err(StdError::generic_err(
