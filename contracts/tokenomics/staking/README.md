@@ -1,6 +1,6 @@
-# Astroport xNICO Staking
+# Astroport xSEUL Staking
 
-This staking contract allows ASTRO holders to stake their tokens in exchange for xNICO. The amount of ASTRO they can claim later increases as accrued fees in the Maker contract get swapped to ASTRO which is then sent to stakers.
+This staking contract allows ASTRO holders to stake their tokens in exchange for xSEUL. The amount of ASTRO they can claim later increases as accrued fees in the Maker contract get swapped to ASTRO which is then sent to stakers.
 
 ---
 
@@ -33,7 +33,7 @@ CW20 receive msg.
 
 #### `Enter`
 
-Deposits ASTRO in the xNICO staking contract.
+Deposits ASTRO in the xSEUL staking contract.
 
 Execute this message by calling the ASTRO token contract and use a message like this:
 ```json
@@ -55,9 +55,9 @@ In `send.msg`, you may encode this JSON string into base64 encoding:
 
 #### `leave`
 
-Burns xNICO and unstakes underlying ASTRO (initial staked amount + accrued ASTRO since staking).
+Burns xSEUL and unstakes underlying ASTRO (initial staked amount + accrued ASTRO since staking).
 
-Execute this message by calling the xNICO token contract and use a message like this:
+Execute this message by calling the xSEUL token contract and use a message like this:
 ```json
 {
   "send": {
@@ -81,7 +81,7 @@ All query messages are described below. A custom struct is defined for each quer
 
 ### `config`
 
-Returns the ASTRO and xNICO addresses.
+Returns the ASTRO and xSEUL addresses.
 
 ```json
 {
@@ -91,7 +91,7 @@ Returns the ASTRO and xNICO addresses.
 
 ### `get_total_shares`
 
-Returns the total amount of xNICO tokens.
+Returns the total amount of xSEUL tokens.
 
 ```json
 {

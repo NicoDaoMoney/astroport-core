@@ -186,7 +186,7 @@ fn instantiate_contracts(router: &mut App, owner: Addr) -> (Addr, Addr, Addr) {
             owner,
             &msg,
             &[],
-            String::from("xNICO"),
+            String::from("xSEUL"),
             None,
         )
         .unwrap();
@@ -265,7 +265,7 @@ fn cw20receive_enter_and_leave() {
         }
     );
 
-    // We can unstake ASTRO only by calling the xNICO token.
+    // We can unstake ASTRO only by calling the xSEUL token.
     let msg = Cw20ExecuteMsg::Send {
         contract: staking_instance.to_string(),
         msg: to_binary(&Cw20HookMsg::Leave {}).unwrap(),
@@ -282,7 +282,7 @@ fn cw20receive_enter_and_leave() {
         .unwrap_err();
     assert_eq!(resp.root_cause().to_string(), "Unauthorized");
 
-    // Tru to stake Alice's 1100 ASTRO for 1100 xNICO
+    // Tru to stake Alice's 1100 ASTRO for 1100 xSEUL
     let msg = Cw20ExecuteMsg::Send {
         contract: staking_instance.to_string(),
         msg: to_binary(&Cw20HookMsg::Enter {}).unwrap(),
@@ -298,7 +298,7 @@ fn cw20receive_enter_and_leave() {
         )
         .unwrap();
 
-    // Check if Alice's xNICO balance is 1100
+    // Check if Alice's xSEUL balance is 1100
     let msg = Cw20QueryMsg::Balance {
         address: alice_address.to_string(),
     };
@@ -363,7 +363,7 @@ fn cw20receive_enter_and_leave() {
         .unwrap_err();
     assert_eq!(resp.root_cause().to_string(), "Unauthorized");
 
-    // Try to unstake Alice's 10 xNICO for 10 ASTRO
+    // Try to unstake Alice's 10 xSEUL for 10 ASTRO
     let msg = Cw20ExecuteMsg::Send {
         contract: staking_instance.to_string(),
         msg: to_binary(&Cw20HookMsg::Leave {}).unwrap(),
@@ -379,7 +379,7 @@ fn cw20receive_enter_and_leave() {
         )
         .unwrap();
 
-    // Check if Alice's xNICO balance is 90
+    // Check if Alice's xSEUL balance is 90
     let msg = Cw20QueryMsg::Balance {
         address: alice_address.to_string(),
     };
@@ -427,7 +427,7 @@ fn cw20receive_enter_and_leave() {
         }
     );
 
-    // Check if the staking contract's xNICO balance is 1000
+    // Check if the staking contract's xSEUL balance is 1000
     let msg = Cw20QueryMsg::Balance {
         address: staking_instance.to_string(),
     };
@@ -473,7 +473,7 @@ fn should_not_allow_withdraw_more_than_what_you_have() {
     );
     let alice_address = Addr::unchecked(ALICE);
 
-    // enter Alice's 2000 ASTRO for 1000 xNICO
+    // enter Alice's 2000 ASTRO for 1000 xSEUL
     let msg = Cw20ExecuteMsg::Send {
         contract: staking_instance.to_string(),
         msg: to_binary(&Cw20HookMsg::Enter {}).unwrap(),
@@ -489,7 +489,7 @@ fn should_not_allow_withdraw_more_than_what_you_have() {
         )
         .unwrap();
 
-    // Check if Alice's xNICO balance is 1000
+    // Check if Alice's xSEUL balance is 1000
     let msg = Cw20QueryMsg::Balance {
         address: alice_address.to_string(),
     };
@@ -505,7 +505,7 @@ fn should_not_allow_withdraw_more_than_what_you_have() {
         }
     );
 
-    // Try to burn Alice's 2000 xNICO and unstake
+    // Try to burn Alice's 2000 xSEUL and unstake
     let msg = Cw20ExecuteMsg::Send {
         contract: staking_instance.to_string(),
         msg: to_binary(&Cw20HookMsg::Leave {}).unwrap(),
@@ -563,7 +563,7 @@ fn should_work_with_more_than_one_participant() {
     );
     let carol_address = Addr::unchecked(CAROL);
 
-    // Stake Alice's 2000 ASTRO for 1000 xNICO (subtract min liquid amount)
+    // Stake Alice's 2000 ASTRO for 1000 xSEUL (subtract min liquid amount)
     let msg = Cw20ExecuteMsg::Send {
         contract: staking_instance.to_string(),
         msg: to_binary(&Cw20HookMsg::Enter {}).unwrap(),
@@ -579,7 +579,7 @@ fn should_work_with_more_than_one_participant() {
         )
         .unwrap();
 
-    // Stake Bob's 10 ASTRO for 10 xNICO
+    // Stake Bob's 10 ASTRO for 10 xSEUL
     let msg = Cw20ExecuteMsg::Send {
         contract: staking_instance.to_string(),
         msg: to_binary(&Cw20HookMsg::Enter {}).unwrap(),
@@ -590,7 +590,7 @@ fn should_work_with_more_than_one_participant() {
         .execute_contract(bob_address.clone(), astro_token_instance.clone(), &msg, &[])
         .unwrap();
 
-    // Check if Alice's xNICO balance is 1000
+    // Check if Alice's xSEUL balance is 1000
     let msg = Cw20QueryMsg::Balance {
         address: alice_address.to_string(),
     };
@@ -606,7 +606,7 @@ fn should_work_with_more_than_one_participant() {
         }
     );
 
-    // Check if Bob's xNICO balance is 10
+    // Check if Bob's xSEUL balance is 10
     let msg = Cw20QueryMsg::Balance {
         address: bob_address.to_string(),
     };
@@ -662,7 +662,7 @@ fn should_work_with_more_than_one_participant() {
         attr("amount", Uint128::from(20u128))
     );
 
-    // Stake Alice's 10 ASTRO for 9 xNICO: 10*2010/2030 = 9
+    // Stake Alice's 10 ASTRO for 9 xSEUL: 10*2010/2030 = 9
     let msg = Cw20ExecuteMsg::Send {
         contract: staking_instance.to_string(),
         msg: to_binary(&Cw20HookMsg::Enter {}).unwrap(),
@@ -678,7 +678,7 @@ fn should_work_with_more_than_one_participant() {
         )
         .unwrap();
 
-    // Check if Alice's xNICO balance is 1009
+    // Check if Alice's xSEUL balance is 1009
     let msg = Cw20QueryMsg::Balance {
         address: alice_address.to_string(),
     };
@@ -694,7 +694,7 @@ fn should_work_with_more_than_one_participant() {
         }
     );
 
-    // Check if Bob's xNICO balance is 10
+    // Check if Bob's xSEUL balance is 10
     let msg = Cw20QueryMsg::Balance {
         address: bob_address.to_string(),
     };
@@ -710,7 +710,7 @@ fn should_work_with_more_than_one_participant() {
         }
     );
 
-    // Burn Bob's 5 xNICO and unstake: gets 5*2040/2019 = 5 ASTRO
+    // Burn Bob's 5 xSEUL and unstake: gets 5*2040/2019 = 5 ASTRO
     let msg = Cw20ExecuteMsg::Send {
         contract: staking_instance.to_string(),
         msg: to_binary(&Cw20HookMsg::Leave {}).unwrap(),
@@ -726,7 +726,7 @@ fn should_work_with_more_than_one_participant() {
         )
         .unwrap();
 
-    // Check if Alice's xNICO balance is 1009
+    // Check if Alice's xSEUL balance is 1009
     let msg = Cw20QueryMsg::Balance {
         address: alice_address.to_string(),
     };
@@ -742,7 +742,7 @@ fn should_work_with_more_than_one_participant() {
         }
     );
 
-    // Check if Bob's xNICO balance is 5
+    // Check if Bob's xSEUL balance is 5
     let msg = Cw20QueryMsg::Balance {
         address: bob_address.to_string(),
     };
@@ -758,7 +758,7 @@ fn should_work_with_more_than_one_participant() {
         }
     );
 
-    // Check if the staking contract's ASTRO balance is 52 (60 - 8 (Bob left 5 xNICO))
+    // Check if the staking contract's ASTRO balance is 52 (60 - 8 (Bob left 5 xSEUL))
     let msg = Cw20QueryMsg::Balance {
         address: staking_instance.to_string(),
     };
@@ -825,7 +825,7 @@ fn should_not_allow_directly_burn_from_xastro() {
     );
     let alice_address = Addr::unchecked(ALICE);
 
-    // enter Alice's 2000 ASTRO for 1000 xNICO
+    // enter Alice's 2000 ASTRO for 1000 xSEUL
     let msg = Cw20ExecuteMsg::Send {
         contract: staking_instance.to_string(),
         msg: to_binary(&Cw20HookMsg::Enter {}).unwrap(),
@@ -841,7 +841,7 @@ fn should_not_allow_directly_burn_from_xastro() {
         )
         .unwrap();
 
-    // Check if Alice's xNICO balance is 1000
+    // Check if Alice's xSEUL balance is 1000
     let msg = Cw20QueryMsg::Balance {
         address: alice_address.to_string(),
     };

@@ -1,6 +1,6 @@
-# Astroport xNICO Token
+# Astroport xSEUL Token
 
-This is the Astroport xNICO token implementation for use on Outposts. It allows
+This is the Astroport xSEUL token implementation for use on Outposts. It allows
 queries of address balance and total supply at specific timestamps.
 
 ---

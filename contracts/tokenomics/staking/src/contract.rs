@@ -21,9 +21,9 @@ const CONTRACT_NAME: &str = "nico-staking";
 /// Contract version that is used for migration.
 const CONTRACT_VERSION: &str = env!("CARGO_PKG_VERSION");
 
-/// xNICO information.
-const TOKEN_NAME: &str = "Staked xNICO";
-const TOKEN_SYMBOL: &str = "xNICO";
+/// xSEUL information.
+const TOKEN_NAME: &str = "Staked xSEUL";
+const TOKEN_SYMBOL: &str = "xSEUL";
 
 /// A `reply` call code ID used for sub-messages.
 const INSTANTIATE_TOKEN_REPLY_ID: u64 = 1;
@@ -50,7 +50,7 @@ pub fn instantiate(
         },
     )?;
 
-    // Create the xNICO token
+    // Create the xSEUL token
     let sub_msg: Vec<SubMsg> = vec![SubMsg {
         msg: WasmMsg::Instantiate {
             admin: Some(msg.owner),
@@ -67,7 +67,7 @@ pub fn instantiate(
                 marketing: msg.marketing,
             })?,
             funds: vec![],
-            label: String::from("Staked Nico Token"),
+            label: String::from("Staked Seul Token"),
         }
         .into(),
         id: INSTANTIATE_TOKEN_REPLY_ID,
@@ -244,7 +244,7 @@ fn receive_cw20(
 /// ## Queries
 /// * **QueryMsg::Config {}** Returns the staking contract configuration using a [`ConfigResponse`] object.
 ///
-/// * **QueryMsg::TotalShares {}** Returns the total xNICO supply using a [`Uint128`] object.
+/// * **QueryMsg::TotalShares {}** Returns the total xSEUL supply using a [`Uint128`] object.
 ///
 /// * **QueryMsg::Config {}** Returns the amount of ASTRO that's currently in the staking pool using a [`Uint128`] object.
 #[cfg_attr(not(feature = "library"), entry_point)]
