@@ -188,7 +188,7 @@ fn check_wrap_and_unwrap() {
 
     let native_wrapper_code_id = store_native_wrapper_code(&mut app);
     let astro_token_code_id = store_astro_code_id(&mut app);
-    let astro_token_addr = create_astro_token(&mut app, astro_token_code_id, &owner);
+    let seul_token_addr = create_astro_token(&mut app, astro_token_code_id, &owner);
 
     let native_wrapper_instance = app
         .instantiate_contract(
@@ -309,7 +309,7 @@ fn check_wrap_and_unwrap() {
     mint_some_astro(
         &mut app,
         owner.clone(),
-        astro_token_addr.clone(),
+        seul_token_addr.clone(),
         owner.as_str(),
         Uint128::new(100),
     );
@@ -318,7 +318,7 @@ fn check_wrap_and_unwrap() {
     let resp = app
         .execute_contract(
             owner.clone(),
-            astro_token_addr.clone(),
+            seul_token_addr.clone(),
             &Cw20ExecuteMsg::Send {
                 contract: native_wrapper_instance.to_string(),
                 msg: to_binary(&Cw20HookMsg::Unwrap {}).unwrap(),

@@ -45,8 +45,8 @@ pub fn instantiate(
     CONFIG.save(
         deps.storage,
         &Config {
-            astro_token_addr: deps.api.addr_validate(&msg.deposit_token_addr)?,
-            xastro_token_addr: Addr::unchecked(""),
+            seul_token_addr: deps.api.addr_validate(&msg.deposit_token_addr)?,
+            xseul_token_addr: Addr::unchecked(""),
         },
     )?;
 
@@ -108,14 +108,14 @@ pub fn reply(deps: DepsMut, _env: Env, msg: Reply) -> Result<Response, ContractE
         } => {
             let mut config = CONFIG.load(deps.storage)?;
 
-            if config.xastro_token_addr != Addr::unchecked("") {
+            if config.xseul_token_addr != Addr::unchecked("") {
                 return Err(ContractError::Unauthorized {});
             }
 
             let init_response = parse_instantiate_response_data(data.as_slice())
                 .map_err(|e| StdError::generic_err(format!("{e}")))?;
 
-            config.xastro_token_addr = deps.api.addr_validate(&init_response.contract_address)?;
+            config.xseul_token_addr = deps.api.addr_validate(&init_response.contract_address)?;
 
             CONFIG.save(deps.storage, &config)?;
 
@@ -141,15 +141,15 @@ fn receive_cw20(
 
     let mut total_deposit = query_token_balance(
         &deps.querier,
-        &config.astro_token_addr,
+        &config.seul_token_addr,
         env.contract.address.clone(),
     )?;
-    let total_shares = query_supply(&deps.querier, &config.xastro_token_addr)?;
+    let total_shares = query_supply(&deps.querier, &config.xseul_token_addr)?;
 
     match from_binary(&cw20_msg.msg)? {
         Cw20HookMsg::Enter {} => {
             let mut messages = vec![];
-            if info.sender != config.astro_token_addr {
+            if info.sender != config.seul_token_addr {
                 return Err(ContractError::Unauthorized {});
             }
 
@@ -167,7 +167,7 @@ fn receive_cw20(
                 }
 
                 messages.push(wasm_execute(
-                    config.xastro_token_addr.clone(),
+                    config.xseul_token_addr.clone(),
                     &Cw20ExecuteMsg::Mint {
                         recipient: env.contract.address.to_string(),
                         amount: MINIMUM_STAKE_AMOUNT,
@@ -189,7 +189,7 @@ fn receive_cw20(
             };
 
             messages.push(wasm_execute(
-                config.xastro_token_addr,
+                config.xseul_token_addr,
                 &Cw20ExecuteMsg::Mint {
                     recipient: recipient.clone(),
                     amount: mint_amount,
@@ -205,7 +205,7 @@ fn receive_cw20(
             ]))
         }
         Cw20HookMsg::Leave {} => {
-            if info.sender != config.xastro_token_addr {
+            if info.sender != config.xseul_token_addr {
                 return Err(ContractError::Unauthorized {});
             }
 
@@ -216,12 +216,12 @@ fn receive_cw20(
             // Burn share
             let res = Response::new()
                 .add_message(CosmosMsg::Wasm(WasmMsg::Execute {
-                    contract_addr: config.xastro_token_addr.to_string(),
+                    contract_addr: config.xseul_token_addr.to_string(),
                     msg: to_binary(&Cw20ExecuteMsg::Burn { amount })?,
                     funds: vec![],
                 }))
                 .add_message(CosmosMsg::Wasm(WasmMsg::Execute {
-                    contract_addr: config.astro_token_addr.to_string(),
+                    contract_addr: config.seul_token_addr.to_string(),
                     msg: to_binary(&Cw20ExecuteMsg::Transfer {
                         recipient: recipient.clone(),
                         amount: what,
@@ -252,15 +252,15 @@ pub fn query(deps: Deps, env: Env, msg: QueryMsg) -> StdResult<Binary> {
     let config = CONFIG.load(deps.storage)?;
     match msg {
         QueryMsg::Config {} => Ok(to_binary(&ConfigResponse {
-            deposit_token_addr: config.astro_token_addr,
-            share_token_addr: config.xastro_token_addr,
+            deposit_token_addr: config.seul_token_addr,
+            share_token_addr: config.xseul_token_addr,
         })?),
         QueryMsg::TotalShares {} => {
-            to_binary(&query_supply(&deps.querier, &config.xastro_token_addr)?)
+            to_binary(&query_supply(&deps.querier, &config.xseul_token_addr)?)
         }
         QueryMsg::TotalDeposit {} => to_binary(&query_token_balance(
             &deps.querier,
-            &config.astro_token_addr,
+            &config.seul_token_addr,
             env.contract.address,
         )?),
     }

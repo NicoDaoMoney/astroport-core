@@ -6,9 +6,9 @@ use cw_storage_plus::Item;
 #[cw_serde]
 pub struct Config {
     /// The ASTRO token contract address
-    pub astro_token_addr: Addr,
+    pub seul_token_addr: Addr,
     /// The xSEUL token contract address
-    pub xastro_token_addr: Addr,
+    pub xseul_token_addr: Addr,
 }
 
 /// Stores the contract config at the given key
