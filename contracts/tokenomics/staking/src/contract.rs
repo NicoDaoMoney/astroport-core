@@ -17,7 +17,7 @@ use astroport::querier::{query_supply, query_token_balance};
 use astroport::xastro_token::InstantiateMsg as TokenInstantiateMsg;
 
 /// Contract name that is used for migration.
-const CONTRACT_NAME: &str = "nico-staking";
+const CONTRACT_NAME: &str = "seul-staking";
 /// Contract version that is used for migration.
 const CONTRACT_VERSION: &str = env!("CARGO_PKG_VERSION");
 
@@ -279,7 +279,7 @@ pub fn migrate(deps: DepsMut, _env: Env, _msg: MigrateMsg) -> Result<Response, C
     let contract_version = get_contract_version(deps.storage)?;
 
     match contract_version.contract.as_ref() {
-        "nico-staking" => match contract_version.version.as_ref() {
+        "seul-staking" => match contract_version.version.as_ref() {
             "1.0.0" | "1.0.1" | "1.0.2" => {}
             _ => return Err(ContractError::MigrationError {}),
         },
