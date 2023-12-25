@@ -45,7 +45,7 @@ pub fn instantiate(
     CONFIG.save(
         deps.storage,
         &Config {
-            ito_token_addr: deps.api.addr_validate(&msg.deposit_token_addr)?,
+            roar_token_addr: deps.api.addr_validate(&msg.deposit_token_addr)?,
             ito_token_addr: Addr::unchecked(""),
         },
     )?;
@@ -252,7 +252,7 @@ pub fn query(deps: Deps, env: Env, msg: QueryMsg) -> StdResult<Binary> {
     let config = CONFIG.load(deps.storage)?;
     match msg {
         QueryMsg::Config {} => Ok(to_binary(&ConfigResponse {
-            deposit_token_addr: config.ito_token_addr,
+            deposit_token_addr: config.roar_token_addr,
             share_token_addr: config.ito_token_addr,
         })?),
         QueryMsg::TotalShares {} => {
