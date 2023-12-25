@@ -6,7 +6,7 @@ use cw_storage_plus::Item;
 #[cw_serde]
 pub struct Config {
     /// The ASTRO token contract address
-    pub ito_token_addr: Addr,
+    pub roar_token_addr: Addr,
     /// The ITO token contract address
     pub ito_token_addr: Addr,
 }
