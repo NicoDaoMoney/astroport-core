@@ -129,11 +129,11 @@ mod tests {
             ],
             [
                 native_asset_info("uluna".to_string()),
-                token_asset_info(Addr::unchecked("roar_token_addr")),
+                token_asset_info(Addr::unchecked("ito_token_addr")),
             ],
             [
                 token_asset_info(Addr::unchecked("random_token_addr")),
-                token_asset_info(Addr::unchecked("roar_token_addr")),
+                token_asset_info(Addr::unchecked("ito_token_addr")),
             ],
         ]
     }

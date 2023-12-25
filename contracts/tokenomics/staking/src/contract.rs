@@ -17,7 +17,7 @@ use astroport::querier::{query_supply, query_token_balance};
 use astroport::xastro_token::InstantiateMsg as TokenInstantiateMsg;
 
 /// Contract name that is used for migration.
-const CONTRACT_NAME: &str = "roar-staking";
+const CONTRACT_NAME: &str = "ito-staking";
 /// Contract version that is used for migration.
 const CONTRACT_VERSION: &str = env!("CARGO_PKG_VERSION");
 
@@ -45,7 +45,7 @@ pub fn instantiate(
     CONFIG.save(
         deps.storage,
         &Config {
-            roar_token_addr: deps.api.addr_validate(&msg.deposit_token_addr)?,
+            ito_token_addr: deps.api.addr_validate(&msg.deposit_token_addr)?,
             xito_token_addr: Addr::unchecked(""),
         },
     )?;
@@ -141,7 +141,7 @@ fn receive_cw20(
 
     let mut total_deposit = query_token_balance(
         &deps.querier,
-        &config.roar_token_addr,
+        &config.ito_token_addr,
         env.contract.address.clone(),
     )?;
     let total_shares = query_supply(&deps.querier, &config.xito_token_addr)?;
@@ -149,7 +149,7 @@ fn receive_cw20(
     match from_binary(&cw20_msg.msg)? {
         Cw20HookMsg::Enter {} => {
             let mut messages = vec![];
-            if info.sender != config.roar_token_addr {
+            if info.sender != config.ito_token_addr {
                 return Err(ContractError::Unauthorized {});
             }
 
@@ -221,7 +221,7 @@ fn receive_cw20(
                     funds: vec![],
                 }))
                 .add_message(CosmosMsg::Wasm(WasmMsg::Execute {
-                    contract_addr: config.roar_token_addr.to_string(),
+                    contract_addr: config.ito_token_addr.to_string(),
                     msg: to_binary(&Cw20ExecuteMsg::Transfer {
                         recipient: recipient.clone(),
                         amount: what,
@@ -252,7 +252,7 @@ pub fn query(deps: Deps, env: Env, msg: QueryMsg) -> StdResult<Binary> {
     let config = CONFIG.load(deps.storage)?;
     match msg {
         QueryMsg::Config {} => Ok(to_binary(&ConfigResponse {
-            deposit_token_addr: config.roar_token_addr,
+            deposit_token_addr: config.ito_token_addr,
             share_token_addr: config.xito_token_addr,
         })?),
         QueryMsg::TotalShares {} => {
@@ -260,7 +260,7 @@ pub fn query(deps: Deps, env: Env, msg: QueryMsg) -> StdResult<Binary> {
         }
         QueryMsg::TotalDeposit {} => to_binary(&query_token_balance(
             &deps.querier,
-            &config.roar_token_addr,
+            &config.ito_token_addr,
             env.contract.address,
         )?),
     }
@@ -279,7 +279,7 @@ pub fn migrate(deps: DepsMut, _env: Env, _msg: MigrateMsg) -> Result<Response, C
     let contract_version = get_contract_version(deps.storage)?;
 
     match contract_version.contract.as_ref() {
-        "roar-staking" => match contract_version.version.as_ref() {
+        "ito-staking" => match contract_version.version.as_ref() {
             "1.0.0" | "1.0.1" | "1.0.2" => {}
             _ => return Err(ContractError::MigrationError {}),
         },
