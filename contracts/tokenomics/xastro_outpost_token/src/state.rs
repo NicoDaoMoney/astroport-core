@@ -10,7 +10,7 @@ pub const BALANCES: SnapshotMap<&Addr, Uint128> = SnapshotMap::new(
     Strategy::EveryBlock,
 );
 
-/// Contains the history of the xSEUL total supply.
+/// Contains the history of the xITO total supply.
 pub const TOTAL_SUPPLY_HISTORY: Map<u64, Uint128> = Map::new("total_supply_history");
 
 /// Snapshots the total token supply at current timestamp.

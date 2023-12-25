@@ -1,6 +1,6 @@
-# Astroport xSEUL Token
+# Astroport xITO Token
 
-This is the Astroport xSEUL token implementation.
+This is the Astroport xITO token implementation.
 
 ---
 

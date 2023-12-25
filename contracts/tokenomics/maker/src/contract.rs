@@ -142,7 +142,7 @@ pub fn instantiate(
 ///
 /// ## Variants
 /// * **ExecuteMsg::Collect { assets }** Swaps collected fee tokens to ASTRO
-/// and distributes the ASTRO between xSEUL and vxSEUL stakers.
+/// and distributes the ASTRO between xITO and vxITO stakers.
 ///
 /// * **ExecuteMsg::UpdateConfig {
 ///             factory_contract,
@@ -165,7 +165,7 @@ pub fn instantiate(
 ///
 /// * **ExecuteMsg::ClaimOwnership {}** Claims contract ownership.
 ///
-/// * **ExecuteMsg::EnableRewards** Enables collected ASTRO (pre Maker upgrade) to be distributed to xSEUL stakers.
+/// * **ExecuteMsg::EnableRewards** Enables collected ASTRO (pre Maker upgrade) to be distributed to xITO stakers.
 #[cfg_attr(not(feature = "library"), entry_point)]
 pub fn execute(
     deps: DepsMut,
@@ -259,7 +259,7 @@ pub fn execute(
     }
 }
 
-/// Swaps fee tokens to ASTRO and distribute the resulting ASTRO to xSEUL and vxSEUL stakers.
+/// Swaps fee tokens to ASTRO and distribute the resulting ASTRO to xITO and vxITO stakers.
 ///
 /// * **assets** array with fee tokens being swapped to ASTRO.
 fn collect(
@@ -290,7 +290,7 @@ fn collect(
         true,
     )?;
 
-    // If no swap messages - send ASTRO directly to x/vxSEUL stakers
+    // If no swap messages - send ASTRO directly to x/vxITO stakers
     if response.messages.is_empty() {
         let (mut distribute_msg, attributes) = distribute(deps, env, &mut cfg)?;
         if !distribute_msg.is_empty() {
@@ -505,7 +505,7 @@ fn swap_bridge_assets(
         .add_attribute("action", "swap_bridge_assets"))
 }
 
-/// Distributes ASTRO rewards to x/vxSEUL holders.
+/// Distributes ASTRO rewards to x/vxITO holders.
 ///
 /// ## Executor
 /// Only the Maker contract itself can execute this.
@@ -527,7 +527,7 @@ fn distribute_astro(deps: DepsMut, env: Env, info: MessageInfo) -> Result<Respon
 
 type DistributeMsgParts = (Vec<SubMsg>, Vec<Attribute>);
 
-/// Private function that performs the ASTRO token distribution to x/vxSEUL.
+/// Private function that performs the ASTRO token distribution to x/vxITO.
 fn distribute(
     deps: DepsMut,
     env: Env,
@@ -652,11 +652,11 @@ fn distribute(
 ///
 /// * **factory_contract** address of the factory contract.
 ///
-/// * **staking_contract** address of the xSEUL staking contract.
+/// * **staking_contract** address of the xITO staking contract.
 ///
-/// * **governance_contract** address of the vxSEUL fee distributor contract.
+/// * **governance_contract** address of the vxITO fee distributor contract.
 ///
-/// * **governance_percent** percentage of ASTRO that goes to the vxSEUL fee distributor.
+/// * **governance_percent** percentage of ASTRO that goes to the vxITO fee distributor.
 ///
 /// * **default_bridge_opt** default bridge asset used for intermediate swaps to ASTRO.
 ///

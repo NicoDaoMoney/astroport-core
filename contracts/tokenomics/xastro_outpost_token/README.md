@@ -1,6 +1,6 @@
-# Astroport xSEUL Token
+# Astroport xITO Token
 
-This is the Astroport xSEUL token implementation for use on Outposts. It allows
+This is the Astroport xITO token implementation for use on Outposts. It allows
 queries of address balance and total supply at specific timestamps.
 
 ---
