@@ -1,6 +1,6 @@
-# Astroport xITO Token
+# Astroport ITO Token
 
-This is the Astroport xITO token implementation.
+This is the Astroport ITO token implementation.
 
 ---
 

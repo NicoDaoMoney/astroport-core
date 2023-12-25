@@ -7,8 +7,8 @@ use cw_storage_plus::Item;
 pub struct Config {
     /// The ASTRO token contract address
     pub ito_token_addr: Addr,
-    /// The xITO token contract address
-    pub xito_token_addr: Addr,
+    /// The ITO token contract address
+    pub ito_token_addr: Addr,
 }
 
 /// Stores the contract config at the given key

@@ -1,6 +1,6 @@
-# Astroport xITO Token
+# Astroport ITO Token
 
-This is the Astroport xITO token implementation for use on Outposts. It allows
+This is the Astroport ITO token implementation for use on Outposts. It allows
 queries of address balance and total supply at specific timestamps.
 
 ---

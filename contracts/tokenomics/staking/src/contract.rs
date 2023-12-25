@@ -21,9 +21,9 @@ const CONTRACT_NAME: &str = "ito-staking";
 /// Contract version that is used for migration.
 const CONTRACT_VERSION: &str = env!("CARGO_PKG_VERSION");
 
-/// xITO information.
-const TOKEN_NAME: &str = "X xITO";
-const TOKEN_SYMBOL: &str = "xITO";
+/// ITO information.
+const TOKEN_NAME: &str = "X ITO";
+const TOKEN_SYMBOL: &str = "ITO";
 
 /// A `reply` call code ID used for sub-messages.
 const INSTANTIATE_TOKEN_REPLY_ID: u64 = 1;
@@ -46,11 +46,11 @@ pub fn instantiate(
         deps.storage,
         &Config {
             ito_token_addr: deps.api.addr_validate(&msg.deposit_token_addr)?,
-            xito_token_addr: Addr::unchecked(""),
+            ito_token_addr: Addr::unchecked(""),
         },
     )?;
 
-    // Create the xITO token
+    // Create the ITO token
     let sub_msg: Vec<SubMsg> = vec![SubMsg {
         msg: WasmMsg::Instantiate {
             admin: Some(msg.owner),
@@ -67,7 +67,7 @@ pub fn instantiate(
                 marketing: msg.marketing,
             })?,
             funds: vec![],
-            label: String::from("X Ito Token"),
+            label: String::from("ITO Token"),
         }
         .into(),
         id: INSTANTIATE_TOKEN_REPLY_ID,
@@ -108,14 +108,14 @@ pub fn reply(deps: DepsMut, _env: Env, msg: Reply) -> Result<Response, ContractE
         } => {
             let mut config = CONFIG.load(deps.storage)?;
 
-            if config.xito_token_addr != Addr::unchecked("") {
+            if config.ito_token_addr != Addr::unchecked("") {
                 return Err(ContractError::Unauthorized {});
             }
 
             let init_response = parse_instantiate_response_data(data.as_slice())
                 .map_err(|e| StdError::generic_err(format!("{e}")))?;
 
-            config.xito_token_addr = deps.api.addr_validate(&init_response.contract_address)?;
+            config.ito_token_addr = deps.api.addr_validate(&init_response.contract_address)?;
 
             CONFIG.save(deps.storage, &config)?;
 
@@ -144,7 +144,7 @@ fn receive_cw20(
         &config.ito_token_addr,
         env.contract.address.clone(),
     )?;
-    let total_shares = query_supply(&deps.querier, &config.xito_token_addr)?;
+    let total_shares = query_supply(&deps.querier, &config.ito_token_addr)?;
 
     match from_binary(&cw20_msg.msg)? {
         Cw20HookMsg::Enter {} => {
@@ -167,7 +167,7 @@ fn receive_cw20(
                 }
 
                 messages.push(wasm_execute(
-                    config.xito_token_addr.clone(),
+                    config.ito_token_addr.clone(),
                     &Cw20ExecuteMsg::Mint {
                         recipient: env.contract.address.to_string(),
                         amount: MINIMUM_STAKE_AMOUNT,
@@ -189,7 +189,7 @@ fn receive_cw20(
             };
 
             messages.push(wasm_execute(
-                config.xito_token_addr,
+                config.ito_token_addr,
                 &Cw20ExecuteMsg::Mint {
                     recipient: recipient.clone(),
                     amount: mint_amount,
@@ -205,7 +205,7 @@ fn receive_cw20(
             ]))
         }
         Cw20HookMsg::Leave {} => {
-            if info.sender != config.xito_token_addr {
+            if info.sender != config.ito_token_addr {
                 return Err(ContractError::Unauthorized {});
             }
 
@@ -216,7 +216,7 @@ fn receive_cw20(
             // Burn share
             let res = Response::new()
                 .add_message(CosmosMsg::Wasm(WasmMsg::Execute {
-                    contract_addr: config.xito_token_addr.to_string(),
+                    contract_addr: config.ito_token_addr.to_string(),
                     msg: to_binary(&Cw20ExecuteMsg::Burn { amount })?,
                     funds: vec![],
                 }))
@@ -244,7 +244,7 @@ fn receive_cw20(
 /// ## Queries
 /// * **QueryMsg::Config {}** Returns the staking contract configuration using a [`ConfigResponse`] object.
 ///
-/// * **QueryMsg::TotalShares {}** Returns the total xITO supply using a [`Uint128`] object.
+/// * **QueryMsg::TotalShares {}** Returns the total ITO supply using a [`Uint128`] object.
 ///
 /// * **QueryMsg::Config {}** Returns the amount of ASTRO that's currently in the staking pool using a [`Uint128`] object.
 #[cfg_attr(not(feature = "library"), entry_point)]
@@ -253,10 +253,10 @@ pub fn query(deps: Deps, env: Env, msg: QueryMsg) -> StdResult<Binary> {
     match msg {
         QueryMsg::Config {} => Ok(to_binary(&ConfigResponse {
             deposit_token_addr: config.ito_token_addr,
-            share_token_addr: config.xito_token_addr,
+            share_token_addr: config.ito_token_addr,
         })?),
         QueryMsg::TotalShares {} => {
-            to_binary(&query_supply(&deps.querier, &config.xito_token_addr)?)
+            to_binary(&query_supply(&deps.querier, &config.ito_token_addr)?)
         }
         QueryMsg::TotalDeposit {} => to_binary(&query_token_balance(
             &deps.querier,

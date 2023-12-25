@@ -76,7 +76,7 @@ impl EscrowHelper {
                 owner.clone(),
                 &msg,
                 &[],
-                String::from("xITO"),
+                String::from("ITO"),
                 None,
             )
             .unwrap();
@@ -110,7 +110,7 @@ impl EscrowHelper {
                 owner.clone(),
                 &msg,
                 &[],
-                String::from("vxITO"),
+                String::from("vITO"),
                 None,
             )
             .unwrap();
